@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Welcome to Wakad, Pune – Your Smart Local Guide</title>
+<style>
+:root{--bg:#f6f7f9;--card:#fff;--tx:#14213d;--mut:#5b6475;--ac:#0b5fff;--ac2:#fff;--bd:#dde1e8;--red:#c62828;--warn:#fff4d6;--warnt:#5c4400;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media(prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#10141c;--card:#1a2030;--tx:#eef1f7;--mut:#a6aebf;--ac:#6aa0ff;--ac2:#0a1020;--bd:#2c3448;--red:#ff6b6b;--warn:#3a3114;--warnt:#f3dd9a}}
+:root[data-theme="dark"]{--bg:#10141c;--card:#1a2030;--tx:#eef1f7;--mut:#a6aebf;--ac:#6aa0ff;--ac2:#0a1020;--bd:#2c3448;--red:#ff6b6b;--warn:#3a3114;--warnt:#f3dd9a}
+*{box-sizing:border-box}html{scroll-padding-top:env(safe-area-inset-top,0px)}
+body{margin:0;background:var(--bg);color:var(--tx);font:18px/1.45 system-ui,-apple-system,"Segoe UI",Roboto,"Noto Sans Devanagari",sans-serif}
+.w{max-width:720px;margin:0 auto;padding:14px}
+h1{font-size:1.5rem;margin:8px 0 4px}p.s{margin:0 0 12px;color:var(--mut)}
+.lang{display:flex;gap:8px;margin-bottom:6px}
+button,a.b{font:inherit;min-height:48px;border-radius:12px;border:2px solid var(--bd);background:var(--card);color:var(--tx);padding:8px 14px;text-decoration:none;display:inline-flex;align-items:center;justify-content:center;gap:6px;cursor:pointer}
+.lang button{flex:1}.on{background:var(--ac)!important;color:var(--ac2)!important;border-color:var(--ac)!important}
+.sos{background:var(--red);color:#fff;border-color:var(--red);width:100%;font-weight:700;font-size:1.15rem;margin:6px 0}
+input{width:100%;font:inherit;min-height:50px;padding:8px 14px;border-radius:12px;border:2px solid var(--bd);background:var(--card);color:var(--tx);margin:6px 0}
+.q{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:8px 0}
+.q button{flex-direction:column;font-weight:600;min-height:72px}.q span{font-size:1.6rem}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.grid button{flex-direction:column;min-height:92px;text-align:center;font-weight:600;font-size:.95rem}.grid span{font-size:1.8rem}
+.card{background:var(--card);border:1px solid var(--bd);border-radius:14px;padding:12px;margin:10px 0}
+.card h3{margin:0 0 4px;font-size:1.1rem}.m{color:var(--mut);font-size:.9rem;margin:2px 0}
+.row{display:flex;flex-wrap:wrap;gap:8px;margin-top:8px}.row a.b{flex:1;min-width:130px;background:var(--ac);color:var(--ac2);border-color:var(--ac);font-weight:600}
+.row a.o{background:var(--card);color:var(--tx);border-color:var(--bd)}
+.tag{display:inline-block;font-size:.78rem;padding:2px 8px;border-radius:99px;background:var(--warn);color:var(--warnt)}
+.note{background:var(--warn);color:var(--warnt);border-radius:12px;padding:10px 12px;font-size:.9rem;margin:10px 0}
+.back{margin:8px 0;width:100%}footer{font-size:.85rem;color:var(--mut);margin:20px 0}
+a{color:var(--ac)}
+</style></head><body><div class="w">
+<div class="lang" id="lang"></div>
+<h1 id="t1"></h1><p class="s" id="t2"></p>
+<a class="b sos" href="tel:112">🚨 <span id="sosT"></span> 112</a>
+<input id="q" type="search" autocomplete="off">
+<div id="home">
+ <div class="q" id="quick"></div>
+ <div class="grid" id="cats"></div>
+ <div class="note" id="note"></div>
+</div>
+<div id="view" hidden><button class="back" id="back"></button><h2 id="vt"></h2><div id="list"></div></div>
+<footer><a id="rep" href="#"></a><br><span id="ftx"></span></footer>
+</div>
+<script>
+// ===== EDIT HERE =====
+const REPORT_EMAIL="prajwallate1999@gmail.com"; // set your own address
+const CITY="Wakad, Pune 411057";
+const UPDATED="October 2026";
+const MAPS="https://www.google.com/maps/search/?api=1&query=";
+const DIR="https://www.google.com/maps/dir/?api=1&destination=";
+// kind: "named" = specific place, name appears in at least one public source; address/phone/hours NOT verified.
+// find: live Google Maps category search (always current, nothing invented).
+const T={
+en:{t1:"Welcome to Wakad, Pune – Your Smart Local Guide",t2:"Scan, Explore, Navigate and Discover Wakad Easily.",sos:"EMERGENCY – CALL",ph:"Search places, e.g. hospital, temple…",back:"← Back",near:"Near Me",nearAsk:"Allow location to search around you.",nearDeny:"Location not allowed. Showing Wakad area instead.",map:"Open in Maps",dir:"Directions",call:"Call",find:"Find live on Google Maps",unv:"Address, phone & hours not verified – check on Maps",rep:"Report incorrect information",ft:"Last reviewed",note:"Place details here are limited to what could be confirmed from public sources. Where a phone number, address or timing is not shown, it has not been verified – use the Maps button. In an emergency, call 112.",none:"No results. Try another word.",bus:"PMPML bus routes & timings",busNote:"Bus route numbers are not listed here because they could not be verified. Use the official PMPML site.",ms:"Status can change – confirm before travelling.",dist:"Approx. distance (sources differ)"},
+mr:{t1:"वाकड, पुणे मध्ये आपले स्वागत – तुमचा स्मार्ट स्थानिक मार्गदर्शक",t2:"स्कॅन करा, शोधा, मार्ग शोधा आणि वाकड सहज जाणून घ्या.",sos:"आणीबाणी – कॉल करा",ph:"ठिकाण शोधा, उदा. रुग्णालय, मंदिर…",back:"← मागे",near:"जवळपास",nearAsk:"जवळचे शोधण्यासाठी लोकेशनची परवानगी द्या.",nearDeny:"लोकेशन नाकारले. वाकड परिसर दाखवत आहोत.",map:"नकाशात उघडा",dir:"मार्ग",call:"कॉल",find:"Google Maps वर थेट शोधा",unv:"पत्ता, फोन व वेळ पडताळलेली नाही – नकाशावर तपासा",rep:"चुकीची माहिती कळवा",ft:"शेवटचा आढावा",note:"येथील माहिती सार्वजनिक स्रोतांतून पुष्टी झालेल्या गोष्टींपुरती मर्यादित आहे. फोन, पत्ता किंवा वेळ दिलेली नसल्यास ती पडताळलेली नाही – नकाशा बटण वापरा. आणीबाणीत 112 वर कॉल करा.",none:"काही सापडले नाही. दुसरा शब्द वापरा.",bus:"PMPML बस मार्ग व वेळापत्रक",busNote:"बस मार्ग क्रमांक पडताळता न आल्याने येथे दिलेले नाहीत. अधिकृत PMPML संकेतस्थळ पहा.",ms:"स्थिती बदलू शकते – प्रवासापूर्वी खात्री करा.",dist:"अंदाजे अंतर (स्रोतांमध्ये फरक)"},
+hi:{t1:"वाकड, पुणे में आपका स्वागत है – आपका स्मार्ट लोकल गाइड",t2:"स्कैन करें, खोजें, रास्ता पाएँ और वाकड को आसानी से जानें।",sos:"आपातकाल – कॉल करें",ph:"जगह खोजें, जैसे अस्पताल, मंदिर…",back:"← वापस",near:"मेरे पास",nearAsk:"आसपास खोजने के लिए लोकेशन की अनुमति दें।",nearDeny:"लोकेशन की अनुमति नहीं मिली। वाकड क्षेत्र दिखा रहे हैं।",map:"मैप में खोलें",dir:"रास्ता",call:"कॉल",find:"Google Maps पर लाइव खोजें",unv:"पता, फ़ोन व समय सत्यापित नहीं – मैप पर जाँचें",rep:"गलत जानकारी बताएँ",ft:"अंतिम समीक्षा",note:"यहाँ की जानकारी सार्वजनिक स्रोतों से पुष्टि हुई बातों तक सीमित है। जहाँ फ़ोन, पता या समय नहीं दिया है, वह सत्यापित नहीं है – मैप बटन उपयोग करें। आपातकाल में 112 पर कॉल करें।",none:"कुछ नहीं मिला। दूसरा शब्द आज़माएँ।",bus:"PMPML बस रूट व समय",busNote:"बस रूट नंबर सत्यापित न हो पाने से यहाँ नहीं दिए गए हैं। आधिकारिक PMPML साइट देखें।",ms:"स्थिति बदल सकती है – यात्रा से पहले पुष्टि करें।",dist:"अनुमानित दूरी (स्रोतों में अंतर)"}
+};
+const C=[
+{id:"hos",i:"🏥",n:{en:"Hospitals & Medical",mr:"रुग्णालये व वैद्यकीय",hi:"अस्पताल व चिकित्सा"},k:"hospital doctor clinic pharmacy ambulance medical रुग्णालय अस्पताल",
+ find:["Hospitals","Pharmacies open 24 hours","Clinics","Ambulance service"],
+ p:[["Lifepoint Hospital","Wakad"],["Hinjawadi Superspeciality Hospital","Hinjewadi"],["Ruby Hall Clinic","Hinjewadi"]]},
+{id:"rel",i:"🛕",n:{en:"Religious Places",mr:"धार्मिक स्थळे",hi:"धार्मिक स्थल"},k:"temple mandir mosque church gurudwara pilgrimage मंदिर",
+ find:["Temples","Mosques","Churches","Gurudwara"],
+ p:[["Dehu (Sant Tukaram Maharaj shrine)","Pilgrimage town near Pune – distance/timings not verified"],["Alandi (Sant Dnyaneshwar Maharaj samadhi)","Pilgrimage town near Pune – distance/timings not verified"]]},
+{id:"food",i:"🍽️",n:{en:"Restaurants & Food",mr:"उपाहारगृहे व खाणे",hi:"रेस्तरां व भोजन"},k:"restaurant cafe veg food budget hotel उपाहारगृह खाना",
+ find:["Vegetarian restaurants","Family restaurants","Cafes","Budget restaurants","Local food Maharashtrian"],p:[]},
+{id:"spot",i:"🌳",n:{en:"Parks & Tourist Spots",mr:"उद्याने व पर्यटन स्थळे",hi:"पार्क व पर्यटन स्थल"},k:"park garden mall attractions उद्यान पार्क",
+ find:["Parks","Gardens","Tourist attractions","Recreation areas"],
+ p:[["Vision One Mall","Wakad area"],["Phoenix Mall of the Millennium","Wakad area"]]},
+{id:"road",i:"🛣️",n:{en:"Roads & Landmarks",mr:"रस्ते व खुणा",hi:"सड़कें व लैंडमार्क"},k:"road chowk junction circle landmark route चौक रस्ता",
+ find:[],
+ p:[["Wakad Chowk","Main junction; Mumbai–Pune Expressway (NH48) corridor"],["Bhumkar Chowk","Junction in Wakad"],["Dange Chowk","Junction in Wakad"],["Shivaji Chowk Hinjawadi","Hinjewadi side"],["Infosys Phase 1 Chowk","Hinjewadi Phase 1"],["Hinjewadi-Wakad Link Road","Connects Wakad and Hinjewadi"]]},
+{id:"bus",i:"🚌",n:{en:"Public Transport",mr:"सार्वजनिक वाहतूक",hi:"सार्वजनिक परिवहन"},k:"bus pmpml metro railway station airport बस मेट्रो रेल्वे",
+ find:["Bus stops"],
+ p:[["Wakad Chowk Bus Stop","Bus stop"],["Bhumkar Chowk Bus Stop","Bus stop"],["Dange Chowk Bus Stop","Bus stop"],["Wakad Chowk Metro Station","Pune Metro Line 3 (Hinjewadi–Shivajinagar). {ms}"],["Pimpri Metro Station","Pune Metro (PCMC corridor), ~8 km per public listings"],["Chinchwad Railway Station","~9 km per public listings"],["Pune Junction Railway Station","~16–18 km. {dist}"],["Pune International Airport","~21–22 km. {dist}"]],
+ link:["https://www.pmpml.org","bus"]},
+{id:"hot",i:"🏨",n:{en:"Hotels & Stays",mr:"हॉटेल्स व निवास",hi:"होटल व ठहरने की जगह"},k:"hotel lodge stay budget accommodation हॉटेल निवास",
+ find:["Hotels","Budget lodges","Service apartments","Guest houses"],p:[]},
+{id:"svc",i:"🏛️",n:{en:"Essential Services",mr:"आवश्यक सेवा",hi:"आवश्यक सेवाएँ"},k:"police atm bank petrol toilet government office पोलीस एटीएम बँक पेट्रोल",
+ find:["ATMs","Banks","Petrol pumps","Public toilets","Government offices"],
+ p:[["Wakad Police Station","Wakad"]]},
+{id:"sos",i:"📞",n:{en:"Emergency Contacts",mr:"आणीबाणी संपर्क",hi:"आपातकालीन संपर्क"},k:"emergency 112 police fire ambulance आणीबाणी आपातकाल",find:[],p:[],
+ nums:[["112","All-in-one emergency / सर्व आणीबाणी / आपातकाल"],["100","Police / पोलीस / पुलिस"],["101","Fire / अग्निशमन / दमकल"],["102","Ambulance / रुग्णवाहिका / एम्बुलेंस"],["108","Emergency ambulance (Maharashtra) / आपत्कालीन रुग्णवाहिका"],["1091","Women helpline / महिला हेल्पलाइन / महिला हेल्पलाइन"],["1098","Child helpline / बाल हेल्पलाइन / चाइल्डलाइन"]]}
+];
+// ===== APP =====
+let L="en";try{L=localStorage.getItem("l")||"en"}catch(e){}
+const $=id=>document.getElementById(id);const t=k=>T[L][k];
+const enc=encodeURIComponent;const sub=s=>s.replace(/\{(\w+)\}/g,(_,k)=>t(k));
+function esc(s){return s.replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]))}
+function setLang(l){L=l;try{localStorage.setItem("l",l)}catch(e){}document.documentElement.lang=l;draw()}
+function draw(){
+ $("lang").innerHTML=[["en","English"],["mr","मराठी"],["hi","हिन्दी"]].map(([c,n])=>`<button class="${c==L?"on":""}" onclick="setLang('${c}')">${n}</button>`).join("");
+ $("t1").textContent=t("t1");$("t2").textContent=t("t2");$("sosT").textContent=t("sos");
+ $("q").placeholder=t("ph");$("note").textContent=t("note");$("back").textContent=t("back");
+ document.title=T.en.t1;
+ const qk=[["near","📍",t("near")],["hos","🏥",C[0].n[L]],["food","🍽️",C[2].n[L]],["rel","🛕",C[1].n[L]],["bus","🚌",C[5].n[L]]];
+ $("quick").innerHTML=qk.map(([k,i,n])=>`<button onclick="${k=="near"?"nearMe()":`openCat('${k}')`}"><span>${i}</span>${esc(n)}</button>`).join("");
+ $("cats").innerHTML=C.map(c=>`<button onclick="openCat('${c.id}')"><span>${c.i}</span>${esc(c.n[L])}</button>`).join("");
+ $("rep").textContent=t("rep");
+ $("rep").href=`mailto:${REPORT_EMAIL}?subject=${enc("Wakad Guide correction")}&body=${enc("Place / page:\nWhat is wrong:\nCorrect information & source:\n")}`;
+ $("ftx").textContent=`${t("ft")}: ${UPDATED}`;
+ if(!$("view").hidden)show(cur);
+}
+let cur=null;
+function openCat(id){show(C.find(c=>c.id==id));scrollTo(0,0)}
+function card(name,note,extra){
+ const q=enc(name+" "+CITY);
+ return `<div class="card"><h3>${esc(name)}</h3>${note?`<p class="m">${esc(sub(note))}</p>`:""}<p class="m"><span class="tag">${esc(t("unv"))}</span></p>
+ <div class="row"><a class="b" target="_blank" rel="noopener" href="${MAPS+q}">🗺️ ${t("map")}</a><a class="b o" target="_blank" rel="noopener" href="${DIR+q}">➡️ ${t("dir")}</a></div></div>`}
+function findCard(f){const q=enc(f+" near Wakad Pune");
+ return `<div class="card"><h3>🔎 ${esc(f)}</h3><div class="row"><a class="b" target="_blank" rel="noopener" href="${MAPS+q}">🗺️ ${t("find")}</a></div></div>`}
+function show(c,filter){
+ cur=c;$("home").hidden=true;$("view").hidden=false;$("vt").textContent=c.i+" "+c.n[L];
+ let h="";
+ if(c.nums)h=c.nums.map(([n,d])=>`<div class="card"><h3>${n}</h3><p class="m">${esc(d)}</p><div class="row"><a class="b" href="tel:${n}">📞 ${t("call")} ${n}</a></div></div>`).join("");
+ h+=c.p.filter(x=>!filter||(x[0]+x[1]).toLowerCase().includes(filter)).map(x=>card(x[0],x[1])).join("");
+ if(!filter){h+=c.find.map(findCard).join("");
+ if(c.link)h+=`<div class="card"><h3>${t(c.link[1])}</h3><p class="m">${t("busNote")}</p><div class="row"><a class="b" target="_blank" rel="noopener" href="${c.link[0]}">🌐 pmpml.org</a></div></div>`}
+ $("list").innerHTML=h||`<p>${t("none")}</p>`}
+function home(){$("view").hidden=true;$("home").hidden=false;$("q").value="";cur=null}
+$("back").onclick=home;
+$("q").oninput=e=>{const v=e.target.value.trim().toLowerCase();if(!v){if(cur)home();return}
+ const hits=[];C.forEach(c=>{if((c.k+" "+c.n.en+" "+c.n.mr+" "+c.n.hi).toLowerCase().includes(v))c.p.concat(c.find.map(f=>[f,""])).forEach(x=>hits.push([c,x]));else c.p.forEach(x=>{if((x[0]+x[1]).toLowerCase().includes(v))hits.push([c,x])})});
+ $("home").hidden=true;$("view").hidden=false;cur={n:{en:"🔎",mr:"🔎",hi:"🔎"},i:"",p:[],find:[]};$("vt").textContent="🔎 "+e.target.value;
+ const seen={};$("list").innerHTML=hits.filter(([c,x])=>!seen[x[0]]&&(seen[x[0]]=1)).slice(0,30).map(([c,x])=>x[1]===""&&c.find.includes(x[0])?findCard(x[0]):card(x[0],x[1])).join("")||`<p>${t("none")}</p>`};
+function nearMe(){
+ const go=(ll)=>{$("home").hidden=true;$("view").hidden=false;$("vt").textContent="📍 "+t("near");
+  const cats=["Hospitals","Pharmacies","Restaurants","Temples","Bus stops","ATMs","Police station","Petrol pumps"];
+  $("list").innerHTML=cats.map(f=>`<div class="card"><h3>${esc(f)}</h3><div class="row"><a class="b" target="_blank" rel="noopener" href="https://www.google.com/maps/search/${enc(f)}/${ll?"@"+ll+",15z":enc("@18.5987,73.7615,14z")}">🗺️ ${t("find")}</a></div></div>`).join("");};
+ if(!navigator.geolocation){go(null);return}
+ navigator.geolocation.getCurrentPosition(p=>go(p.coords.latitude.toFixed(5)+","+p.coords.longitude.toFixed(5)),()=>{alert(t("nearDeny"));go(null)},{timeout:10000,maximumAge:60000});
+}
+draw();
+</script></body></html>
